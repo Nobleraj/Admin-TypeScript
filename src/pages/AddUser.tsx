@@ -9,7 +9,8 @@ import {
     GridItem,
     VStack,
     Select,
-    FormControl
+    FormControl,
+    FormErrorMessage
   } from "@chakra-ui/react";
   
   import { useState } from "react";
@@ -25,21 +26,22 @@ import {
     const user = useAppSelector((state) =>
       state.user.userList.find((user) => user.id === id)
     );
-  
+    //console.log("user", id);
     const [firstName, setFirstname] = useState<string | undefined>(user?.firstName || "");
     const [lastName, setLastname] = useState<string | undefined>(user?.lastName || "");
     const [address, setAddress] = useState<string | undefined>(user?.address || "");
     const [city, setCity] = useState<string | undefined>(user?.city || "");
-    const [country, setCountry] = useState<string | undefined>(user?.country || "");
+    const [country, setCountry] = useState<string | undefined>(user?.country || "default");
   
     const toast = useToast();
+    
 
     const handleOnSubmit = () => {
       if (id) {
         editBook();
         return;
       }
-      //if(!title || !author)return;
+      if(!firstName || !lastName || !address || !city || country==='default')return;
       dispatch(addNewUser({ firstName, lastName, address, city, country, id: uuidv4() }));
       toast({
         title: 'User created.',
@@ -66,51 +68,8 @@ import {
       setCity("");
       setCountry("ind");
     };
-  
+    
     return (
-      /*<Flex
-        height="100vh"
-        justifyContent="center"
-        alignItems="center"
-        flexDirection="column"
-      >
-        <Box width="50%">
-          <Box
-            display="flex"
-            flexDirection="row"
-            justifyContent="space-between"
-            marginBottom="20px"
-          >
-            <Heading color="white" data-testid="header">
-              {id ? "Update User" : "Add User"}
-            </Heading>
-          </Box>
-          <FormLabel color="white">Title</FormLabel>
-          <Input
-            value={title}
-            color="white"
-            placeholder="The Lord of the Rings"
-            onChange={(e) => setTitle(e.currentTarget.value)}
-          />
-          <FormLabel color="white" marginTop={4}>
-            Author
-          </FormLabel>
-          <Input
-            value={author}
-            color="white"
-            placeholder="J.R.R Tolkien"
-            onChange={(e) => setAuthor(e.currentTarget.value)}
-          />
-          <Button
-            marginTop={4}
-            colorScheme="teal"
-            type="submit"
-            onClick={handleOnSubmit}
-          >
-            Submit
-          </Button>
-        </Box>
-      </Flex>*/
       <VStack w="full" h="full" p={10} spacing={10}
       justifyContent="center"
       alignItems="center">
@@ -146,7 +105,8 @@ import {
         <GridItem colSpan={1}>
           <FormControl>
             <FormLabel color='white'>Country</FormLabel>
-            <Select color='white' defaultValue={country} onChange={(e)=>setCountry(e.target.value)}>
+            <Select data-testid='select' color='white' defaultValue={country} onChange={(e)=>setCountry(e.target.value)}>
+              <option value="default" disabled>Select Country</option>
               <option value="india">India</option>
               <option value="usa">USA</option>
               <option value="canada">Canada</option>
