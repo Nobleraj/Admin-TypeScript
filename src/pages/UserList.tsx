@@ -1,14 +1,21 @@
-import { Box, Button, Flex, Heading, Stack } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Stack,Alert,AlertIcon,Text } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
-import { useAppSelector } from '../hooks';
+import { useAppSelector, useAppDispatch } from '../hooks';
 import UserInfo from '../components/UserInfo';
+import { fetchUser } from "../redux/userSlice";
 
 const UserList = () => {
-  const userList = useAppSelector((state) => state.user.userList);
-  //console.log(userList);
+  const { userList, isLoading, userName } = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
+  console.log(isLoading, userName);
+  const loadUserHandler = () => {
+    dispatch(fetchUser());
+  }
   return (
     <Flex
-      height="100vh"
+      height="100%"
+      marginTop='80px'
+      marginBottom='50px'
       justifyContent="center"
       alignItems="center"
       flexDirection="column"
@@ -21,10 +28,16 @@ const UserList = () => {
           marginBottom="20px"
         >
           <Heading color="white">User List</Heading>
+          <Box>
           <Link to="/add-new-user">
-            <Button paddingX="3rem">Add</Button>
+            <Button paddingX="2rem">Add</Button>
           </Link>
+          <Button data-testid='button' marginLeft="15px" paddingX="2rem" onClick={loadUserHandler}>Load User</Button>
+          </Box>
         </Box>
+        {isLoading && <Text color='white' textAlign='center' padding='15px'>Fetching user...</Text>}
+        <Text color='white' textAlign='center' padding='15px'>{userName.title}</Text>
+        {userList.length ?
         <Box rounded="md" bg="purple.500" color="white" px="15px" py="15px">
           <Stack spacing={8}>
             {userList.map((user) => (
@@ -39,7 +52,12 @@ const UserList = () => {
               />
             ))}
           </Stack>
-        </Box>
+        </Box> : 
+         <Alert status='info' marginTop='200px'>
+         <AlertIcon />
+          No user found.
+       </Alert>
+        }
       </Box>
     </Flex>
   );

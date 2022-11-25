@@ -1,7 +1,7 @@
 import { store } from '../redux/store';
 import { deleteUser, updateUser, addNewUser } from '../redux/userSlice';
 
-test('Update an user author and title', () => {
+test('Update an user details', () => {
   let state = store.getState().user;
   const unchangedUser = state.userList.find((user) => user.id === '1');
   expect(unchangedUser?.firstName).toBe('Jenny');
@@ -35,8 +35,6 @@ test('Delete an user from list with id', () => {
   state = store.getState().user;
 
   expect(state.userList.length).toBeLessThan(initialUserCount);
-
-  // expect(backToUnchangedBook).toEqual(unchangedBook);
 });
 
 test('Add a new user', () => {

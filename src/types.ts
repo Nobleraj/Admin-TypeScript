@@ -6,4 +6,13 @@ export type UserState = {
     city: string | undefined;
     country: string | undefined;
   };
+  export type UserStateAPI = {
+    isLoading : boolean;
+    userName : {
+      userId : string;
+      id : string;
+      title : string;
+      completed : boolean;
+    }
+  }
   

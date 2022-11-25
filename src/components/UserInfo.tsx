@@ -34,6 +34,7 @@ const UserInfo = ({
       <Box display="flex" flexDirection="column">
         <Heading fontSize="xl">{firstName + " " + lastName}</Heading>
         <Text mt={4}>{address}</Text>
+        <Text mt={4}>{city+","+country}</Text>
       </Box>
       <Box>
         <IconButton

@@ -1,4 +1,4 @@
-import { Button, Flex, Box, Text } from '@chakra-ui/react';
+import { Button, Flex, Box} from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {
@@ -24,9 +24,6 @@ const Navbar = () => {
             color="white"
             letterSpacing="0.65px"
           >
-            <Text fontSize={['xl', '2xl', '2xl', '2xl']} mr={2}>
-              🦉
-            </Text>
             Admin App
           </Button>
         </Link>

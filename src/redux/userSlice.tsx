@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { UserState } from '../types';
+import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import { UserState,UserStateAPI } from '../types';
 
 type userType = {
   userList: UserState[];
@@ -32,9 +32,24 @@ const userList: UserState[] = [
   },
 ];
 
-const initialState: userType = {
+const initialState: userType & UserStateAPI = {
   userList,
+  isLoading : false,
+  userName : {
+    userId : '',
+    id : '',
+    title : '',
+    completed : false
+  }
 };
+//https://randomuser.me/api/
+export const fetchUser = createAsyncThunk('user/fetchUsers', async () => {
+  return fetch("https://jsonplaceholder.typicode.com/todos/1").then(res=>res.json()).then(res=>{
+    //const {data } = res;
+    console.log('user',res);
+    return res
+  }).catch(err=>console.log('fetch err',err));
+})
 
 export const userSlice = createSlice({
   name: 'user',
@@ -58,6 +73,19 @@ export const userSlice = createSlice({
       );
     },
   },
+  extraReducers : builder =>{
+     builder.addCase(fetchUser.pending,(state,action)=>{
+      state.isLoading = true;
+     })
+     builder.addCase(fetchUser.fulfilled,(state,action)=>{
+      console.log("action", action.payload);
+      state.isLoading = false;
+      state.userName = action.payload;
+     })
+     builder.addCase(fetchUser.rejected,(state,action)=>{
+      state.isLoading = false;
+     })
+  }
 });
 
 export const { addNewUser, updateUser, deleteUser } = userSlice.actions;
