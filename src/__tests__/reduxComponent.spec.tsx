@@ -9,10 +9,10 @@ import { Provider } from 'react-redux';
 import AddUser from '../pages/AddUser';
 import { Route, MemoryRouter } from 'react-router-dom';
 
-import { store } from '../redux/store';
+import { setupStore } from '../redux/store';
 import { UserState } from '../types';
 import UserInfo from '../components/UserInfo';
-
+const store = setupStore();
 const renderAddUser = (): RenderResult =>
   render(
     <Provider store={store}>

@@ -46,7 +46,7 @@ const initialState: userType & UserStateAPI = {
 export const fetchUser = createAsyncThunk('user/fetchUsers', async () => {
   return fetch("https://jsonplaceholder.typicode.com/todos/1").then(res=>res.json()).then(res=>{
     //const {data } = res;
-    console.log('user',res);
+    console.log('action',res);
     return res
   }).catch(err=>console.log('fetch err',err));
 })
@@ -78,7 +78,7 @@ export const userSlice = createSlice({
       state.isLoading = true;
      })
      builder.addCase(fetchUser.fulfilled,(state,action)=>{
-      console.log("action", action.payload);
+      console.log("reducer", action.payload);
       state.isLoading = false;
       state.userName = action.payload;
      })

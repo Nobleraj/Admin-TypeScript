@@ -1,5 +1,7 @@
-import { store } from '../redux/store';
 import { deleteUser, updateUser, addNewUser } from '../redux/userSlice';
+import { setupStore } from '../redux/store';
+
+const store = setupStore();
 
 test('Update an user details', () => {
   let state = store.getState().user;
@@ -53,3 +55,4 @@ test('Add a new user', () => {
   expect(newlyAddedUser?.country).toBe('ind');
   expect(state.userList.length).toBeGreaterThan(initialUserCount);
 });
+

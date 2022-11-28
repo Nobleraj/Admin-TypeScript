@@ -7,7 +7,7 @@ import { fetchUser } from "../redux/userSlice";
 const UserList = () => {
   const { userList, isLoading, userName } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
-  console.log(isLoading, userName);
+  console.log('render',isLoading, userName);
   const loadUserHandler = () => {
     dispatch(fetchUser());
   }
